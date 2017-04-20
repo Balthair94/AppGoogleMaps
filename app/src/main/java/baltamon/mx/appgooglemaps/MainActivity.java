@@ -9,16 +9,24 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final int MY_LOCATION_PERMISSIONS = 01;
 
     private GoogleMap googleMap;
+
+    private ArrayList<Marker> markers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +57,28 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        if (googleMap != null)
+        if (googleMap != null){
             showCurrentLocation();
+            onMapActions();
+        }
+    }
+
+    public void onMapActions(){
+        googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                if (markers.size() == 0){
+                    markers.add(googleMap.addMarker(new MarkerOptions().position(latLng).title("Origin")));
+                } else if (markers.size() == 1){
+                    markers.add(googleMap.addMarker(new MarkerOptions().position(latLng).title("Destination")));
+                } else {
+                    markers.get(1).setTitle("Origin");
+                    markers.get(0).remove(); //Remove marker from the map
+                    markers.remove(0); //Remove marker from the list
+                    markers.add(googleMap.addMarker(new MarkerOptions().position(latLng).title("Destination")));
+                }
+            }
+        });
     }
 
     public void showCurrentLocation() {
