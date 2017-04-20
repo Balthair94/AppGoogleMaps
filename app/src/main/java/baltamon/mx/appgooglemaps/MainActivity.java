@@ -1,6 +1,7 @@
 package baltamon.mx.appgooglemaps;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -17,16 +18,27 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+import baltamon.mx.appgooglemaps.listeners.DirectionFinderListener;
+import baltamon.mx.appgooglemaps.models.Route;
+import baltamon.mx.appgooglemaps.utilities.DirectionFinder;
+
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, DirectionFinderListener {
 
     private static final int MY_LOCATION_PERMISSIONS = 01;
 
     private GoogleMap googleMap;
 
     private ArrayList<Marker> markers = new ArrayList<>();
+
+    private List<Polyline> polylinePaths;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,14 +83,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     markers.add(googleMap.addMarker(new MarkerOptions().position(latLng).title("Origin")));
                 } else if (markers.size() == 1){
                     markers.add(googleMap.addMarker(new MarkerOptions().position(latLng).title("Destination")));
+                    sendRequest(markers.get(0).getPosition(), markers.get(1).getPosition());
                 } else {
                     markers.get(1).setTitle("Origin");
                     markers.get(0).remove(); //Remove marker from the map
                     markers.remove(0); //Remove marker from the list
                     markers.add(googleMap.addMarker(new MarkerOptions().position(latLng).title("Destination")));
+                    sendRequest(markers.get(0).getPosition(), markers.get(1).getPosition());
                 }
             }
         });
+    }
+
+    public void sendRequest(LatLng origin, LatLng destination){
+        try {
+            new DirectionFinder(this, origin, destination).execute();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     public void showCurrentLocation() {
@@ -97,6 +119,38 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                     showCurrentLocation();
                 break;
+        }
+    }
+
+    @Override
+    public void onDirectionFinderStart() {
+        progressDialog = ProgressDialog.show(this, "Please wait.",
+                "Finding direction..!", true);
+
+        if (polylinePaths != null) {
+            for (Polyline polyline:polylinePaths ) {
+                polyline.remove();
+            }
+        }
+    }
+
+    @Override
+    public void onDirectionFinderSuccess(List<Route> routes) {
+        progressDialog.dismiss();
+        polylinePaths = new ArrayList<>();
+
+        if (!routes.isEmpty()){
+            for (Route route : routes) {
+                PolylineOptions polylineOptions = new PolylineOptions().
+                        color(Color.BLUE).
+                        width(10);
+
+                for (int i = 0; i < route.getPoints().size(); i++)
+                    polylineOptions.add(route.getPoints().get(i));
+
+                polylinePaths.add(googleMap.addPolyline(polylineOptions));
+
+            }
         }
     }
 }
