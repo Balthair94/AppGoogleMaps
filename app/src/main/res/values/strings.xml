@@ -3,4 +3,8 @@
 
     <string name="google_maps_key">AIzaSyADvszYNk-hzPf1Bsiozyjn1TvONqY337k</string>
     <string name="slide_panel_title">DETAILS</string>
+    <string name="text_origin">Origin</string>
+    <string name="text_destination">Destination</string>
+    <string name="text_distance_km">00 KM.</string>
+    <string name="text_time_min">00 min</string>
 </resources>

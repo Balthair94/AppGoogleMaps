@@ -1,11 +1,13 @@
 package baltamon.mx.appgooglemaps;
 
 import android.Manifest;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,7 +27,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import baltamon.mx.appgooglemaps.fragments.DirectionsDetailFragment;
 import baltamon.mx.appgooglemaps.listeners.DirectionFinderListener;
+import baltamon.mx.appgooglemaps.listeners.PlacesListener;
+import baltamon.mx.appgooglemaps.models.Distance;
+import baltamon.mx.appgooglemaps.models.Duration;
 import baltamon.mx.appgooglemaps.models.Route;
 import baltamon.mx.appgooglemaps.utilities.DirectionFinder;
 
@@ -40,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private List<Polyline> polylinePaths;
     private ProgressDialog progressDialog;
 
+    private PlacesListener placesListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         setUpToolbar();
         setUpMap();
+        showFragment();
     }
 
     public void setUpMap() {
@@ -93,6 +102,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         });
+    }
+
+    public void showFragment(){
+        Route route = new Route();
+        route.setDuration(new Duration("00 min.", 0));
+        route.setDistance(new Distance("00 km.", 0));
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        DirectionsDetailFragment fragment = DirectionsDetailFragment.newInstance(route);
+        transaction.replace(R.id.fragment_layout, fragment);
+        transaction.commit();
     }
 
     public void sendRequest(LatLng origin, LatLng destination){
@@ -156,5 +176,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         } else
             Toast.makeText(this, "There is no results", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        super.onAttachFragment(fragment);
+        placesListener = (PlacesListener) fragment;
     }
 }
