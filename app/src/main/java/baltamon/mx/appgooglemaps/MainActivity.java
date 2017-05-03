@@ -104,10 +104,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void showCurrentLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             //WE CALL THE DIALOGBOX TO REQUEST FOR THE PERMISSIONS
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_LOCATION_PERMISSIONS);
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_LOCATION_PERMISSIONS);
         }
         googleMap.setMyLocationEnabled(true);
     }
@@ -143,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             for (Route route : routes) {
                 PolylineOptions polylineOptions = new PolylineOptions().
                         color(Color.BLUE).
-                        width(10);
+                        width(5);
 
                 for (int i = 0; i < route.getPoints().size(); i++)
                     polylineOptions.add(route.getPoints().get(i));
@@ -151,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 polylinePaths.add(googleMap.addPolyline(polylineOptions));
 
             }
-        }
+        } else
+            Toast.makeText(this, "There is no results", Toast.LENGTH_SHORT).show();
     }
 }

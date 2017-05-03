@@ -37,7 +37,8 @@ public class DirectionFinder {
         String latDestination = String.valueOf(destination.latitude);
         String lngDestination = String.valueOf(destination.longitude);
 
-        return DIRECTION_URL_API + "origin=" + latOrigin + "," + lngOrigin + "&destination=" + latDestination + "," + lngDestination + "&key=" + GOOGLE_API_KEY + "&mode=driving";
+        return DIRECTION_URL_API + "origin=" + latOrigin + "," + lngOrigin + "&destination=" +
+                latDestination + "," + lngDestination + "&key=" + GOOGLE_API_KEY + "&mode=driving";
     }
 
 }

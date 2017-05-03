@@ -2,4 +2,5 @@
     <string name="app_name">AppGoogleMaps</string>
 
     <string name="google_maps_key">AIzaSyADvszYNk-hzPf1Bsiozyjn1TvONqY337k</string>
+    <string name="slide_panel_title">DETAILS</string>
 </resources>
