@@ -41,6 +41,10 @@ public class DirectionsDetailFragment extends Fragment implements PlacesListener
     }
 
     public void showDetails(){
+        if (route.getStartAddress() != null){
+            holder.getEt_origin().setText(route.getStartAddress());
+            holder.getEt_destination().setText(route.getEndAddress());
+        }
         holder.getTv_distance().setText(route.getDistance().getText());
         holder.getTv_time().setText(route.getDuration().getText());
     }

@@ -71,12 +71,13 @@ public class DownloadRawData extends AsyncTask<String, Void, String> {
         if (data == null)
             return;
 
+        Route route = null;
         List<Route> routes = new ArrayList<>();
         JSONObject jsonData = new JSONObject(data);
         JSONArray jsonRoutes = jsonData.getJSONArray("routes");
         for (int i = 0; i < jsonRoutes.length(); i++) {
             JSONObject jsonRoute = jsonRoutes.getJSONObject(i);
-            Route route = new Route();
+            route = new Route();
 
             JSONObject overview_polylineJson = jsonRoute.getJSONObject("overview_polyline");
             JSONArray jsonLegs = jsonRoute.getJSONArray("legs");
@@ -97,7 +98,7 @@ public class DownloadRawData extends AsyncTask<String, Void, String> {
             routes.add(route);
         }
 
-        listener.onDirectionFinderSuccess(routes);
+        listener.onDirectionFinderSuccess(routes, route);
     }
 
     private List<LatLng> decodePolyLine(final String poly) {

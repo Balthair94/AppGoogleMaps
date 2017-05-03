@@ -10,5 +10,5 @@ import baltamon.mx.appgooglemaps.models.Route;
 
 public interface DirectionFinderListener {
     void onDirectionFinderStart();
-    void onDirectionFinderSuccess(List<Route> route);
+    void onDirectionFinderSuccess(List<Route> route, Route routeObject);
 }

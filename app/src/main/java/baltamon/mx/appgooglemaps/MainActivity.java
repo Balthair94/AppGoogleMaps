@@ -1,7 +1,6 @@
 package baltamon.mx.appgooglemaps;
 
 import android.Manifest;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -112,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         DirectionsDetailFragment fragment = DirectionsDetailFragment.newInstance(route);
         transaction.replace(R.id.fragment_layout, fragment);
+        placesListener = fragment;
         transaction.commit();
     }
 
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onDirectionFinderSuccess(List<Route> routes) {
+    public void onDirectionFinderSuccess(List<Route> routes, Route routeObject) {
         progressDialog.dismiss();
         polylinePaths = new ArrayList<>();
 
@@ -174,13 +174,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 polylinePaths.add(googleMap.addPolyline(polylineOptions));
 
             }
+
+            //It allows to know to the Fragment that there is a new Route
+            placesListener.onLocationsChange(routeObject);
         } else
             Toast.makeText(this, "There is no results", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onAttachFragment(Fragment fragment) {
-        super.onAttachFragment(fragment);
-        placesListener = (PlacesListener) fragment;
-    }
 }
