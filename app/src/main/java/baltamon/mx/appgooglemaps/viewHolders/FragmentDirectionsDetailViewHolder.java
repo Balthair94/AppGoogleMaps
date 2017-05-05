@@ -1,7 +1,7 @@
 package baltamon.mx.appgooglemaps.viewHolders;
 
 import android.view.View;
-import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import baltamon.mx.appgooglemaps.R;
@@ -12,24 +12,26 @@ import baltamon.mx.appgooglemaps.R;
 
 public class FragmentDirectionsDetailViewHolder {
 
-    private EditText et_origin;
-    private EditText et_destination;
+    private TextView tv_origin;
+    private TextView tv_destination;
     private TextView tv_distance;
     private TextView tv_time;
+    private LinearLayout ll_origin;
+    private LinearLayout ll_destination;
 
     public FragmentDirectionsDetailViewHolder(View view){
-        et_origin = (EditText) view.findViewById(R.id.et_origin);
-        et_destination = (EditText) view.findViewById(R.id.et_destination);
+        tv_origin = (TextView) view.findViewById(R.id.tv_origin);
+        tv_destination = (TextView) view.findViewById(R.id.tv_destination);
         tv_distance = (TextView) view.findViewById(R.id.tv_distance);
         tv_time = (TextView) view.findViewById(R.id.tv_time);
     }
 
-    public EditText getEt_origin() {
-        return et_origin;
+    public TextView getTv_origin() {
+        return tv_origin;
     }
 
-    public EditText getEt_destination() {
-        return et_destination;
+    public TextView getTv_destination() {
+        return tv_destination;
     }
 
     public TextView getTv_distance() {
@@ -38,5 +40,13 @@ public class FragmentDirectionsDetailViewHolder {
 
     public TextView getTv_time() {
         return tv_time;
+    }
+
+    public LinearLayout getLl_origin() {
+        return ll_origin;
+    }
+
+    public LinearLayout getLl_destination() {
+        return ll_destination;
     }
 }
