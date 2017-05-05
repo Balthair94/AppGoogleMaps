@@ -36,6 +36,6 @@ dependencies {
 
     //To make work google maps
     compile 'com.google.android.gms:play-services-maps:10.2.0'
-
+    compile 'com.google.android.gms:play-services-places:10.2.0'
 
 }

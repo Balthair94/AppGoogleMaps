@@ -24,6 +24,8 @@ public class FragmentDirectionsDetailViewHolder {
         tv_destination = (TextView) view.findViewById(R.id.tv_destination);
         tv_distance = (TextView) view.findViewById(R.id.tv_distance);
         tv_time = (TextView) view.findViewById(R.id.tv_time);
+        ll_origin = (LinearLayout) view.findViewById(R.id.ll_origin);
+        ll_destination = (LinearLayout) view.findViewById(R.id.ll_destination);
     }
 
     public TextView getTv_origin() {

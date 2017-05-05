@@ -2,6 +2,7 @@ package baltamon.mx.appgooglemaps;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
@@ -13,8 +14,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -40,7 +47,7 @@ import baltamon.mx.appgooglemaps.utilities.DirectionFinder;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, DirectionFinderListener {
 
-    private static final int MY_LOCATION_PERMISSIONS = 01;
+    private static final int MY_LOCATION_PERMISSIONS = 1;
 
     private GoogleMap googleMap;
 
@@ -178,6 +185,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     showCurrentLocation();
                 break;
         }
+    }
+
+    public void showToast(String string){
+        Toast.makeText(this, string, Toast.LENGTH_SHORT).show();
     }
 
     @Override
